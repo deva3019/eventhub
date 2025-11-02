@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+{% block title %}{{ event.title }} - EventHub{% endblock %}
+
+{% block content %}
+
+<div class="max-w-4xl mx-auto px-4 py-12 bg-white dark:bg-navy min-h-screen">
+    <!-- Back Button -->
+    <a href="/events" class="inline-block mb-6 text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-bold transition-colors">
+        <i class="fas fa-arrow-left mr-2"></i>Back to Events
+    </a>
+    
+    <!-- Event Card - Minimized & Compact -->
+    <div class="bg-white dark:bg-navy-dark shadow-2xl rounded-2xl overflow-hidden animate__animated animate__fadeInUp">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-0">
+            <!-- Event Image -->
+            <div class="md:col-span-1 h-64 md:h-auto overflow-hidden bg-gradient-to-br from-navy-light to-navy-dark">
+                {% if event.image %}
+                <img src="/static/uploads/events/{{ event.image }}" alt="{{ event.title }}" class="w-full h-full object-cover hover:scale-110 transition-transform duration-300">
+                {% else %}
+                <div class="w-full h-full flex items-center justify-center">
+                    <i class="fas fa-image text-gray-400 text-5xl"></i>
+                </div>
+                {% endif %}
+            </div>
+            
+            <!-- Event Details - Compact -->
+            <div class="md:col-span-2 p-8 flex flex-col justify-between bg-white dark:bg-navy-dark">
+                <!-- Header -->
+                <div>
+                    <div class="flex items-start justify-between mb-4">
+                        <h1 class="text-3xl font-bold text-navy dark:text-white">{{ event.title }}</h1>
+                        <span class="bg-blue-500 text-white px-4 py-1 rounded-full text-sm font-bold">{{ event.category }}</span>
+                    </div>
+                    
+                    <p class="text-gray-600 dark:text-gray-300 mb-6 line-clamp-2 font-semibold">{{ event.description }}</p>
+                </div>
+                
+                <!-- Info Grid - Compact -->
+                <div class="grid grid-cols-2 gap-4 mb-6">
+                    <div class="flex items-center space-x-2 bg-gray-50 dark:bg-navy p-3 rounded-lg">
+                        <i class="fas fa-calendar text-blue-500 text-lg"></i>
+                        <div>
+                            <p class="text-xs text-gray-500 dark:text-gray-400 font-semibold">Date</p>
+                            <p class="font-bold text-navy dark:text-white">{{ event.date }}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center space-x-2 bg-gray-50 dark:bg-navy p-3 rounded-lg">
+                        <i class="fas fa-clock text-blue-500 text-lg"></i>
+                        <div>
+                            <p class="text-xs text-gray-500 dark:text-gray-400 font-semibold">Time</p>
+                            <p class="font-bold text-navy dark:text-white">{{ event.time }}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center space-x-2 bg-gray-50 dark:bg-navy p-3 rounded-lg">
+                        <i class="fas fa-map-marker text-blue-500 text-lg"></i>
+                        <div>
+                            <p class="text-xs text-gray-500 dark:text-gray-400 font-semibold">Venue</p>
+                            <p class="font-bold text-navy dark:text-white truncate">{{ event.venue }}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center space-x-2 bg-gray-50 dark:bg-navy p-3 rounded-lg">
+                        <i class="fas fa-users text-blue-500 text-lg"></i>
+                        <div>
+                            <p class="text-xs text-gray-500 dark:text-gray-400 font-semibold">Capacity</p>
+                            <p class="font-bold text-navy dark:text-white">{{ event.capacity }}</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Action Buttons -->
+                <div class="flex flex-col md:flex-row gap-3">
+                    <a href="/register-event/{{ event._id }}" class="flex-1 text-center bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-bold py-3 px-6 rounded-lg transition-all transform hover:scale-105">
+                        <i class="fas fa-check-circle mr-2"></i>Register Now
+                    </a>
+                    
+                    <button onclick="shareEvent()" class="flex-1 border-2 border-blue-500 dark:border-blue-400 text-blue-500 dark:text-blue-400 hover:bg-blue-500 hover:text-white dark:hover:bg-blue-600 font-bold py-3 px-6 rounded-lg transition-all">
+                        <i class="fas fa-share-alt mr-2"></i>Share
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function shareEvent() {
+    if (navigator.share) {
+        navigator.share({
+            title: '{{ event.title }}',
+            text: '{{ event.description }}',
+            url: window.location.href
+        });
+    } else {
+        alert('Event Link: ' + window.location.href);
+    }
+}
+</script>
+
+{% endblock %}

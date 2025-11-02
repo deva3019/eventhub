@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+
+{% block title %}Events - EventHub{% endblock %}
+
+{% block content %}
+
+<div class="max-w-7xl mx-auto px-4 py-12 bg-white dark:bg-navy min-h-screen">
+    <!-- Header -->
+    <div class="mb-12">
+        <h1 class="text-4xl font-bold text-navy dark:text-white mb-4 animate__animated animate__fadeInDown drop-shadow-lg">
+            <i class="fas fa-list text-blue-500 mr-3"></i>All Events
+        </h1>
+        <p class="text-gray-600 dark:text-gray-300 text-lg font-semibold">Discover and register for exciting college events</p>
+    </div>
+    
+    <!-- Search & Filter -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+        <input type="text" id="searchInput" placeholder="Search events by title or description..." class="px-4 py-3 border-2 border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:border-blue-500 dark:bg-navy-dark dark:text-white dark:placeholder-gray-400 transition-colors font-semibold">
+        
+        <select id="categoryFilter" class="px-4 py-3 border-2 border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:border-blue-500 dark:bg-navy-dark dark:text-white transition-colors font-semibold">
+            <option value="" class="dark:bg-navy-dark dark:text-white">All Categories</option>
+            <option value="Technical" class="dark:bg-navy-dark dark:text-white">Technical</option>
+            <option value="Cultural" class="dark:bg-navy-dark dark:text-white">Cultural</option>
+            <option value="Sports" class="dark:bg-navy-dark dark:text-white">Sports</option>
+            <option value="Workshop" class="dark:bg-navy-dark dark:text-white">Workshop</option>
+            <option value="Others" class="dark:bg-navy-dark dark:text-white">Others</option>
+        </select>
+    </div>
+    
+    <!-- Events Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="eventsGrid">
+        {% if events %}
+            {% for event in events %}
+            <div class="event-card bg-white dark:bg-navy-dark shadow-lg hover:shadow-2xl rounded-lg overflow-hidden transition-all transform hover:scale-105 animate__animated animate__fadeInUp">
+                <!-- Event Image -->
+                {% if event.image %}
+                <img src="/static/uploads/events/{{ event.image }}" alt="{{ event.title }}" class="w-full h-48 object-cover">
+                {% else %}
+                <div class="w-full h-48 bg-gradient-to-br from-navy-light to-navy-dark flex items-center justify-center">
+                    <i class="fas fa-image text-gray-400 text-4xl"></i>
+                </div>
+                {% endif %}
+                
+                <!-- Event Details -->
+                <div class="p-6">
+                    <div class="flex items-start justify-between mb-2">
+                        <h3 class="text-xl font-bold text-navy dark:text-white event-title flex-1">{{ event.title }}</h3>
+                        <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded-full text-sm font-bold event-category ml-2">{{ event.category }}</span>
+                    </div>
+                    
+                    <p class="text-gray-600 dark:text-gray-400 text-sm mb-4 event-description">{{ event.description[:100] }}...</p>
+                    
+                    <div class="space-y-2 mb-4 text-sm text-gray-700 dark:text-gray-300">
+                        <div class="flex items-center">
+                            <i class="fas fa-calendar text-blue-500 w-5 mr-2"></i>
+                            <span class="event-date">{{ event.date }}</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-clock text-blue-500 w-5 mr-2"></i>
+                            <span class="event-time">{{ event.time }}</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-map-marker text-blue-500 w-5 mr-2"></i>
+                            <span class="event-venue truncate">{{ event.venue }}</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-users text-blue-500 w-5 mr-2"></i>
+                            <span>Capacity: {{ event.capacity }}</span>
+                        </div>
+                    </div>
+                    
+                    <a href="/event/{{ event._id }}" class="block text-center w-full bg-navy hover:bg-navy-light dark:bg-blue-600 dark:hover:bg-blue-700 text-white font-bold py-2 rounded transition-colors">
+                        View Details
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+        <div class="col-span-full text-center py-12">
+            <i class="fas fa-inbox text-6xl text-gray-400 mb-4"></i>
+            <h3 class="text-2xl font-bold text-navy dark:text-white">No events found</h3>
+            <p class="text-gray-600 dark:text-gray-400 font-semibold">Try adjusting your search or filters</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+document.getElementById('searchInput').addEventListener('keyup', filterEvents);
+document.getElementById('categoryFilter').addEventListener('change', filterEvents);
+
+function filterEvents() {
+    const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+    const categoryFilter = document.getElementById('categoryFilter').value;
+    const eventCards = document.querySelectorAll('.event-card');
+    
+    eventCards.forEach(card => {
+        const title = card.querySelector('.event-title').textContent.toLowerCase();
+        const description = card.querySelector('.event-description').textContent.toLowerCase();
+        const category = card.querySelector('.event-category').textContent;
+        
+        const matchesSearch = title.includes(searchTerm) || description.includes(searchTerm);
+        const matchesCategory = categoryFilter === '' || category === categoryFilter;
+        
+        card.style.display = (matchesSearch && matchesCategory) ? 'block' : 'none';
+    });
+}
+</script>
+
+{% endblock %}

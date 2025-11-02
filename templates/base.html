@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}EventHub - Professional Event Management{% endblock %}</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'navy': '#001a4d',
+                        'navy-dark': '#000d26',
+                        'navy-light': '#0033cc',
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'glow': 'glow 2s ease-in-out infinite',
+                        'pulse-glow': 'pulse-glow 2s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        glow: {
+                            '0%, 100%': { boxShadow: '0 0 20px rgba(59, 130, 246, 0.5)' },
+                            '50%': { boxShadow: '0 0 40px rgba(59, 130, 246, 0.8)' },
+                        },
+                        'pulse-glow': {
+                            '0%, 100%': { opacity: '0.6' },
+                            '50%': { opacity: '1' },
+                        },
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Animate CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+    
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    
+    {% block extra_css %}{% endblock %}
+</head>
+<body class="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-navy dark:to-navy-dark transition-colors duration-300" id="body">
+    
+    <!-- Twinkle Stars Background -->
+    <div class="stars-container" id="starsContainer"></div>
+    
+    <!-- Navigation -->
+    <nav class="bg-white dark:bg-navy-dark shadow-xl sticky top-0 z-50 transition-all duration-300 border-b-2 border-navy border-opacity-10">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+            <!-- Logo -->
+            <div class="flex items-center space-x-3 cursor-pointer hover:scale-105 transition-transform">
+                <div class="relative">
+                    <div class="absolute inset-0 bg-gradient-to-r from-blue-400 to-blue-600 rounded-lg blur opacity-75 animate-pulse"></div>
+                    <div class="relative bg-navy dark:bg-navy-light px-3 py-2 rounded-lg">
+                        <i class="fas fa-calendar-check text-white text-xl"></i>
+                    </div>
+                </div>
+                <a href="/" class="text-2xl font-bold bg-gradient-to-r from-navy to-blue-600 bg-clip-text text-transparent dark:from-white dark:to-blue-300">
+                    EventHub
+                </a>
+            </div>
+            
+            <!-- Menu -->
+            <ul class="hidden md:flex space-x-8 items-center">
+                <li><a href="/" class="text-gray-700 dark:text-gray-200 hover:text-navy dark:hover:text-blue-300 font-medium transition-colors">Home</a></li>
+                <li><a href="/events" class="text-gray-700 dark:text-gray-200 hover:text-navy dark:hover:text-blue-300 font-medium transition-colors">Browse Events</a></li>
+                
+                {% if 'staff_id' in session %}
+                <li class="dropdown">
+                    <button class="text-gray-700 dark:text-gray-200 hover:text-navy dark:hover:text-blue-300 flex items-center space-x-1 font-medium transition-colors focus:outline-none">
+                        <i class="fas fa-user-circle"></i>
+                        <span>{{ session.staff_name }}</span>
+                        <i class="fas fa-chevron-down text-xs"></i>
+                    </button>
+                    <div class="dropdown-menu absolute top-full right-0 mt-2 bg-white dark:bg-navy-dark shadow-2xl rounded-lg w-48 hidden z-50">
+                        <a href="/staff/dashboard" class="block px-4 py-3 text-gray-700 dark:text-gray-200 hover:bg-navy hover:text-white dark:hover:bg-blue-600 transition-colors rounded-t-lg border-b dark:border-gray-700">
+                            <i class="fas fa-tachometer-alt mr-2"></i>Dashboard
+                        </a>
+                        <a href="/staff/my-events" class="block px-4 py-3 text-gray-700 dark:text-gray-200 hover:bg-navy hover:text-white dark:hover:bg-blue-600 transition-colors border-b dark:border-gray-700">
+                            <i class="fas fa-calendar mr-2"></i>My Events
+                        </a>
+                        <a href="/staff/logout" class="block px-4 py-3 text-gray-700 dark:text-gray-200 hover:bg-navy hover:text-white dark:hover:bg-blue-600 transition-colors rounded-b-lg">
+                            <i class="fas fa-sign-out-alt mr-2"></i>Logout
+                        </a>
+                    </div>
+                </li>
+                {% else %}
+                <li><a href="/staff/login" class="text-gray-700 dark:text-gray-200 hover:text-navy dark:hover:text-blue-300 font-medium transition-colors">Staff Login</a></li>
+                {% endif %}
+                
+                <!-- Theme Toggle Button -->
+                <li>
+                    <button id="themeToggle" class="w-12 h-6 bg-gray-300 dark:bg-blue-600 rounded-full flex items-center px-1 transition-all cursor-pointer focus:outline-none hover:shadow-lg dark:shadow-blue-500">
+                        <i class="fas fa-sun text-yellow-500 text-sm ml-0.5"></i>
+                        <div class="w-5 h-5 bg-white rounded-full shadow-md transform dark:translate-x-6 transition-transform"></div>
+                    </button>
+                </li>
+            </ul>
+            
+            <!-- Mobile Menu Button -->
+            <button id="mobileMenuBtn" class="md:hidden text-navy dark:text-white focus:outline-none">
+                <i class="fas fa-bars text-2xl"></i>
+            </button>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div id="mobileMenu" class="hidden md:hidden bg-white dark:bg-navy-dark p-4 space-y-3 border-t-2 border-navy border-opacity-10">
+            <a href="/" class="block text-gray-700 dark:text-gray-200 py-2 font-medium hover:text-navy dark:hover:text-blue-300">Home</a>
+            <a href="/events" class="block text-gray-700 dark:text-gray-200 py-2 font-medium hover:text-navy dark:hover:text-blue-300">Browse Events</a>
+            
+            {% if 'staff_id' in session %}
+            <a href="/staff/dashboard" class="block text-gray-700 dark:text-gray-200 py-2 font-medium hover:text-navy dark:hover:text-blue-300">Dashboard</a>
+            <a href="/staff/my-events" class="block text-gray-700 dark:text-gray-200 py-2 font-medium hover:text-navy dark:hover:text-blue-300">My Events</a>
+            <a href="/staff/logout" class="block text-gray-700 dark:text-gray-200 py-2 font-medium hover:text-navy dark:hover:text-blue-300">Logout</a>
+            {% else %}
+            <a href="/staff/login" class="block text-gray-700 dark:text-gray-200 py-2 font-medium hover:text-navy dark:hover:text-blue-300">Staff Login</a>
+            {% endif %}
+        </div>
+    </nav>
+    
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="flash-message fixed top-20 left-4 right-4 md:left-1/2 md:translate-x-1/2 md:max-w-md z-50" role="alert">
+                    <div class="rounded-xl px-6 py-4 shadow-2xl flex items-center space-x-3 {% if category == 'success' %}bg-gradient-to-r from-green-400 to-green-500 text-white{% elif category == 'danger' %}bg-gradient-to-r from-red-400 to-red-500 text-white{% else %}bg-gradient-to-r from-blue-400 to-blue-500 text-white{% endif %}">
+                        <i class="fas fa-{% if category == 'success' %}check-circle{% elif category == 'danger' %}exclamation-circle{% else %}info-circle{% endif %} text-lg"></i>
+                        <span class="font-medium">{{ message }}</span>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    
+    <!-- Main Content -->
+    <main class="relative z-10">
+        {% block content %}{% endblock %}
+    </main>
+    
+    <!-- Footer -->
+    <footer class="bg-navy-dark text-white mt-20 border-t-4 border-blue-500 transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-4 py-16">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
+                <!-- About -->
+                <div class="animate__animated animate__fadeInUp">
+                    <div class="flex items-center space-x-3 mb-4">
+                        <i class="fas fa-calendar-check text-blue-400 text-2xl"></i>
+                        <h3 class="text-2xl font-bold text-white">EventHub</h3>
+                    </div>
+                    <p class="text-gray-300 leading-relaxed">Professional event management system designed to make college event organization seamless and engaging for everyone.</p>
+                </div>
+                
+                <!-- Quick Links -->
+                <div class="animate__animated animate__fadeInUp" style="animation-delay: 0.1s">
+                    <h4 class="font-bold text-lg mb-4 text-blue-400">Quick Links</h4>
+                    <ul class="space-y-2 text-gray-300">
+                        <li><a href="/" class="hover:text-blue-300 transition-colors flex items-center"><i class="fas fa-arrow-right mr-2 text-blue-400"></i>Home</a></li>
+                        <li><a href="/events" class="hover:text-blue-300 transition-colors flex items-center"><i class="fas fa-arrow-right mr-2 text-blue-400"></i>Browse Events</a></li>
+                        <li><a href="/staff/login" class="hover:text-blue-300 transition-colors flex items-center"><i class="fas fa-arrow-right mr-2 text-blue-400"></i>Staff Login</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Contact -->
+                <div class="animate__animated animate__fadeInUp" style="animation-delay: 0.2s">
+                    <h4 class="font-bold text-lg mb-4 text-blue-400">Get in Touch</h4>
+                    <ul class="space-y-3 text-gray-300">
+                        <li class="flex items-center space-x-3 hover:text-blue-300 transition-colors">
+                            <i class="fas fa-envelope text-blue-400 w-5"></i>
+                            <span>contact@eventhub.com</span>
+                        </li>
+                        <li class="flex items-center space-x-3 hover:text-blue-300 transition-colors">
+                            <i class="fas fa-map-marker-alt text-blue-400 w-5"></i>
+                            <span>College Campus</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Bottom Footer -->
+            <div class="border-t border-gray-700 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-400 text-center md:text-left mb-4 md:mb-0">
+                    &copy; 2025 EventHub. All rights reserved.
+                </p>
+                <p class="text-gray-400 text-center">
+                    Developed by <span class="text-blue-300 font-bold">Deva Veera Kumaran</span>
+                </p>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Scripts -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

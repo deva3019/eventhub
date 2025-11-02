@@ -1,0 +1,218 @@
+{% extends "base.html" %}
+
+{% block title %}EventHub - Discover & Register Events{% endblock %}
+
+{% block content %}
+
+<!-- Hero Section with Impressive Animation -->
+<section class="relative min-h-screen bg-gradient-to-br from-navy via-blue-900 to-navy-light dark:from-navy-dark dark:via-navy dark:to-navy-light overflow-hidden pt-20 pb-12">
+    
+    <!-- Animated Background Elements -->
+    <div class="absolute inset-0 overflow-hidden">
+        <!-- Gradient Orbs -->
+        <div class="absolute top-20 left-10 w-72 h-72 bg-blue-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
+        <div class="absolute top-40 right-10 w-72 h-72 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000"></div>
+        <div class="absolute -bottom-8 left-20 w-72 h-72 bg-pink-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-4000"></div>
+        
+        <!-- Grid Pattern -->
+        <svg class="absolute w-full h-full opacity-10" viewBox="0 0 1200 600">
+            <defs>
+                <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+                    <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+                </pattern>
+            </defs>
+            <rect width="1200" height="600" fill="url(#grid)"/>
+        </svg>
+    </div>
+    
+    <!-- Content -->
+    <div class="relative max-w-7xl mx-auto px-4 py-24 flex flex-col items-center justify-center text-center min-h-screen">
+        <!-- Animated Badge -->
+        <div class="mb-6 animate__animated animate__fadeInDown">
+            <span class="inline-block bg-blue-500 bg-opacity-20 border border-blue-400 text-blue-100 px-6 py-2 rounded-full text-sm font-bold">
+                <i class="fas fa-rocket mr-2"></i>Welcome to EventHub 2025
+            </span>
+        </div>
+        
+        <!-- Main Heading with Gradient -->
+        <h1 class="text-6xl md:text-7xl lg:text-8xl font-bold text-white mb-6 animate__animated animate__fadeInDown leading-tight drop-shadow-lg" style="animation-delay: 0.1s">
+            Discover <span class="bg-gradient-to-r from-blue-300 via-blue-200 to-blue-400 bg-clip-text text-transparent animate-pulse">Amazing</span> Events
+        </h1>
+        
+        <!-- Subheading -->
+        <p class="text-xl md:text-2xl text-gray-100 mb-8 max-w-2xl animate__animated animate__fadeInUp leading-relaxed drop-shadow-lg" style="animation-delay: 0.2s">
+            Connect with your college community, explore exciting events, and register for experiences that matter
+        </p>
+        
+        <!-- CTA Buttons -->
+        <div class="flex flex-col md:flex-row gap-4 mb-16 justify-center animate__animated animate__fadeInUp" style="animation-delay: 0.3s">
+            <a href="/events" class="group relative inline-block">
+                <div class="absolute inset-0 bg-gradient-to-r from-blue-500 to-blue-600 rounded-xl blur opacity-75 group-hover:opacity-100 transition duration-300 animate-glow"></div>
+                <div class="relative px-8 py-4 bg-white text-navy rounded-xl flex items-center space-x-2 group-hover:scale-105 transition-transform font-bold">
+                    <i class="fas fa-search text-lg"></i>
+                    <span>Browse Events</span>
+                </div>
+            </a>
+            
+            <a href="/staff/login" class="group px-8 py-4 border-2 border-white text-white rounded-xl font-bold hover:bg-white hover:text-navy transition-all transform hover:scale-105">
+                <i class="fas fa-sign-in-alt mr-2"></i>Staff Portal
+            </a>
+        </div>
+        
+        <!-- Stats Section -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 w-full mb-16">
+            <div class="bg-white bg-opacity-10 backdrop-blur-md p-8 rounded-2xl border border-white border-opacity-30 hover:border-blue-300 transition-all transform hover:scale-105 animate__animated animate__fadeInLeft" style="animation-delay: 0.4s">
+                <div class="text-4xl font-bold text-blue-200 mb-2">100+</div>
+                <p class="text-white text-sm font-semibold">Active Events</p>
+            </div>
+            
+            <div class="bg-white bg-opacity-10 backdrop-blur-md p-8 rounded-2xl border border-white border-opacity-30 hover:border-blue-300 transition-all transform hover:scale-105 animate__animated animate__fadeInUp" style="animation-delay: 0.5s">
+                <div class="text-4xl font-bold text-blue-200 mb-2">5K+</div>
+                <p class="text-white text-sm font-semibold">Community Members</p>
+            </div>
+            
+            <div class="bg-white bg-opacity-10 backdrop-blur-md p-8 rounded-2xl border border-white border-opacity-30 hover:border-blue-300 transition-all transform hover:scale-105 animate__animated animate__fadeInRight" style="animation-delay: 0.6s">
+                <div class="text-4xl font-bold text-blue-200 mb-2">1K+</div>
+                <p class="text-white text-sm font-semibold">Daily Registrations</p>
+            </div>
+        </div>
+        
+        <!-- Scroll Indicator -->
+        <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+            <svg class="w-8 h-8 text-blue-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+            </svg>
+        </div>
+    </div>
+</section>
+
+<!-- Featured Events Section -->
+<section class="max-w-7xl mx-auto px-4 py-20 bg-white dark:bg-navy">
+    <div class="mb-16 text-center animate__animated animate__fadeInDown">
+        <h2 class="text-5xl font-bold text-navy dark:text-white mb-4 drop-shadow-lg">
+            <i class="fas fa-fire text-orange-500 mr-3"></i>Trending Events
+        </h2>
+        <p class="text-gray-600 dark:text-gray-200 text-lg font-semibold">Popular events happening near you</p>
+    </div>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {% for event in events %}
+        <div class="group bg-white dark:bg-navy-dark shadow-lg hover:shadow-2xl rounded-2xl overflow-hidden transition-all transform hover:scale-105 animate__animated animate__fadeInUp" style="animation-delay: {{ loop.index * 0.1 }}s">
+            <!-- Event Image Container -->
+            <div class="relative h-48 overflow-hidden bg-gradient-to-br from-navy-light to-navy-dark">
+                {% if event.image %}
+                <img src="/static/uploads/events/{{ event.image }}" alt="{{ event.title }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
+                {% else %}
+                <div class="w-full h-full flex items-center justify-center">
+                    <i class="fas fa-image text-gray-400 text-5xl"></i>
+                </div>
+                {% endif %}
+                <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300"></div>
+                
+                <!-- Badge -->
+                <div class="absolute top-4 right-4">
+                    <span class="bg-blue-500 text-white px-3 py-1 rounded-full text-xs font-bold">{{ event.category }}</span>
+                </div>
+            </div>
+            
+            <!-- Event Info -->
+            <div class="p-6">
+                <h3 class="text-xl font-bold text-navy dark:text-white mb-2 line-clamp-2">{{ event.title }}</h3>
+                
+                <div class="space-y-2 mb-4 text-sm text-gray-600 dark:text-gray-300">
+                    <div class="flex items-center">
+                        <i class="fas fa-calendar text-blue-500 w-5 mr-2"></i>
+                        <span>{{ event.date }}</span>
+                    </div>
+                    <div class="flex items-center">
+                        <i class="fas fa-map-marker text-blue-500 w-5 mr-2"></i>
+                        <span class="truncate">{{ event.venue }}</span>
+                    </div>
+                </div>
+                
+                <a href="/event/{{ event._id }}" class="w-full block text-center bg-gradient-to-r from-navy to-blue-600 hover:from-blue-600 hover:to-navy text-white font-bold py-3 rounded-lg transition-all transform hover:scale-105">
+                    Explore Now
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    
+    <div class="text-center mt-16">
+        <a href="/events" class="inline-block bg-gradient-to-r from-navy to-blue-600 hover:from-blue-600 hover:to-navy text-white font-bold py-4 px-12 rounded-lg transition-all transform hover:scale-105 shadow-lg">
+            View All Events <i class="fas fa-arrow-right ml-2"></i>
+        </a>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="bg-gray-50 dark:bg-navy-dark py-20">
+    <div class="max-w-7xl mx-auto px-4">
+        <div class="text-center mb-16 animate__animated animate__fadeInDown">
+            <h2 class="text-5xl font-bold text-navy dark:text-white mb-4 drop-shadow-lg">Why Choose EventHub?</h2>
+            <p class="text-gray-600 dark:text-gray-200 text-lg font-semibold">Everything you need to manage events effortlessly</p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div class="bg-white dark:bg-navy p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all animate__animated animate__fadeInUp">
+                <div class="w-16 h-16 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center mb-4 mx-auto">
+                    <i class="fas fa-zap text-blue-600 text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-bold text-navy dark:text-white text-center mb-2">Lightning Fast</h3>
+                <p class="text-gray-600 dark:text-gray-300 text-center font-medium">Quick registration and instant notifications</p>
+            </div>
+            
+            <div class="bg-white dark:bg-navy p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all animate__animated animate__fadeInUp" style="animation-delay: 0.1s">
+                <div class="w-16 h-16 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center mb-4 mx-auto">
+                    <i class="fas fa-shield-alt text-green-600 text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-bold text-navy dark:text-white text-center mb-2">Secure</h3>
+                <p class="text-gray-600 dark:text-gray-300 text-center font-medium">Your data is protected with enterprise security</p>
+            </div>
+            
+            <div class="bg-white dark:bg-navy p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all animate__animated animate__fadeInUp" style="animation-delay: 0.2s">
+                <div class="w-16 h-16 bg-purple-100 dark:bg-purple-900 rounded-full flex items-center justify-center mb-4 mx-auto">
+                    <i class="fas fa-mobile-alt text-purple-600 text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-bold text-navy dark:text-white text-center mb-2">Mobile Ready</h3>
+                <p class="text-gray-600 dark:text-gray-300 text-center font-medium">Fully responsive on all devices</p>
+            </div>
+            
+            <div class="bg-white dark:bg-navy p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all animate__animated animate__fadeInUp" style="animation-delay: 0.3s">
+                <div class="w-16 h-16 bg-red-100 dark:bg-red-900 rounded-full flex items-center justify-center mb-4 mx-auto">
+                    <i class="fas fa-headset text-red-600 text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-bold text-navy dark:text-white text-center mb-2">24/7 Support</h3>
+                <p class="text-gray-600 dark:text-gray-300 text-center font-medium">Always here to help you succeed</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    @keyframes blob {
+        0%, 100% {
+            transform: translate(0, 0) scale(1);
+        }
+        33% {
+            transform: translate(30px, -50px) scale(1.1);
+        }
+        66% {
+            transform: translate(-20px, 20px) scale(0.9);
+        }
+    }
+    
+    .animate-blob {
+        animation: blob 7s infinite;
+    }
+    
+    .animation-delay-2000 {
+        animation-delay: 2s;
+    }
+    
+    .animation-delay-4000 {
+        animation-delay: 4s;
+    }
+</style>
+
+{% endblock %}

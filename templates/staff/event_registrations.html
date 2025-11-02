@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+
+{% block title %}Registrations - EventHub{% endblock %}
+
+{% block content %}
+
+<div class="max-w-7xl mx-auto px-4 py-12">
+    <!-- Header -->
+    <div class="mb-12 animate__animated animate__fadeInDown">
+        <a href="/staff/dashboard" class="text-blue-500 hover:text-blue-600 font-bold mb-6 inline-block">
+            <i class="fas fa-arrow-left mr-2"></i>Back to Dashboard
+        </a>
+        <h1 class="text-4xl font-bold text-navy dark:text-white mb-2">
+            <i class="fas fa-users text-blue-500 mr-3"></i>Event Registrations
+        </h1>
+        <p class="text-gray-600 dark:text-gray-400">{{ event.title }}</p>
+    </div>
+    
+    <!-- Stats -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+        <div class="bg-white dark:bg-navy shadow-lg rounded-lg p-6 animate__animated animate__fadeInUp">
+            <i class="fas fa-users text-blue-500 text-3xl mb-2"></i>
+            <h3 class="text-gray-600 dark:text-gray-400 text-sm font-bold">Total Registrations</h3>
+            <p class="text-3xl font-bold text-navy dark:text-white">{{ registrations|length }}</p>
+        </div>
+        
+        <div class="bg-white dark:bg-navy shadow-lg rounded-lg p-6 animate__animated animate__fadeInUp" style="animation-delay: 0.1s">
+            <i class="fas fa-calendar text-green-500 text-3xl mb-2"></i>
+            <h3 class="text-gray-600 dark:text-gray-400 text-sm font-bold">Event Date</h3>
+            <p class="text-2xl font-bold text-navy dark:text-white">{{ event.date }}</p>
+        </div>
+        
+        <div class="bg-white dark:bg-navy shadow-lg rounded-lg p-6 animate__animated animate__fadeInUp" style="animation-delay: 0.2s">
+            <i class="fas fa-percent text-purple-500 text-3xl mb-2"></i>
+            <h3 class="text-gray-600 dark:text-gray-400 text-sm font-bold">Capacity Used</h3>
+            <p class="text-2xl font-bold text-navy dark:text-white">{{ (registrations|length / event.capacity * 100)|round(1) }}%</p>
+        </div>
+    </div>
+    
+    <!-- Registrations Table -->
+    <div class="bg-white dark:bg-navy shadow-2xl rounded-lg overflow-hidden animate__animated animate__fadeInUp">
+        <div class="overflow-x-auto">
+            <table class="w-full">
+                <thead class="bg-navy dark:bg-navy-dark text-white">
+                    <tr>
+                        <th class="px-6 py-3 text-left font-bold">Name</th>
+                        <th class="px-6 py-3 text-left font-bold">Email</th>
+                        <th class="px-6 py-3 text-left font-bold">Phone</th>
+                        <th class="px-6 py-3 text-left font-bold">College</th>
+                        <th class="px-6 py-3 text-left font-bold">Registered At</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for reg in registrations %}
+                    <tr class="border-b border-gray-200 dark:border-navy-dark hover:bg-gray-50 dark:hover:bg-navy-dark transition-colors">
+                        <td class="px-6 py-4 text-navy dark:text-white font-semibold">{{ reg.student_name }}</td>
+                        <td class="px-6 py-4 text-gray-600 dark:text-gray-400">{{ reg.student_email }}</td>
+                        <td class="px-6 py-4 text-gray-600 dark:text-gray-400">{{ reg.student_phone }}</td>
+                        <td class="px-6 py-4 text-gray-600 dark:text-gray-400">{{ reg.college }}</td>
+                        <td class="px-6 py-4 text-gray-600 dark:text-gray-400 text-sm">{{ reg.registered_at.strftime('%d-%m-%Y %H:%M') if reg.registered_at else 'N/A' }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+        {% if not registrations %}
+        <div class="text-center py-12">
+            <i class="fas fa-inbox text-5xl text-gray-400 mb-4"></i>
+            <p class="text-gray-600 dark:text-gray-400">No registrations yet</p>
+        </div>
+        {% endif %}
+    </div>
+    
+    <!-- Export Button -->
+    {% if registrations %}
+    <div class="mt-6">
+        <button onclick="exportToCSV()" class="inline-block bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-8 rounded-lg transition-all transform hover:scale-105">
+            <i class="fas fa-download mr-2"></i>Export to CSV
+        </button>
+    </div>
+    {% endif %}
+</div>
+
+<script>
+function exportToCSV() {
+    let csv = 'Name,Email,Phone,College,Registered At\n';
+    const rows = document.querySelectorAll('table tbody tr');
+    
+    rows.forEach(row => {
+        const cells = row.querySelectorAll('td');
+        csv += Array.from(cells).map(cell => `"${cell.textContent.trim()}"`).join(',') + '\n';
+    });
+    
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = '{{ event.title }}_registrations.csv';
+    a.click();
+}
+</script>
+
+{% endblock %}

@@ -1,0 +1,305 @@
+/* ================================
+   ROOT VARIABLES
+   ================================ */
+
+:root {
+    --scrollbar-width: 0px;
+}
+
+/* ================================
+   LIGHT MODE - BRIGHT
+   ================================ */
+
+body {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    color: #1a1a1a;
+    transition: all 0.3s ease;
+}
+
+body.light {
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+}
+
+/* ================================
+   DARK MODE - NAVY BLUE WITH GLOW
+   ================================ */
+
+html.dark body {
+    background: linear-gradient(135deg, #000d26 0%, #001a4d 50%, #0033cc 100%);
+    color: #ffffff;
+}
+
+html.dark {
+    background: linear-gradient(135deg, #000d26 0%, #001a4d 50%, #0033cc 100%);
+}
+
+/* ================================
+   TWINKLE STARS ANIMATION
+   ================================ */
+
+.stars-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.star {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background-color: #ffffff;
+    border-radius: 50%;
+    animation: twinkle 3s infinite;
+}
+
+@keyframes twinkle {
+    0%, 100% {
+        opacity: 0;
+    }
+    50% {
+        opacity: 1;
+    }
+}
+
+/* Dark mode glowing stars */
+.glowing-star {
+    background: radial-gradient(circle, #3b82f6 0%, transparent 70%);
+    animation: glow-twinkle 3s infinite, float 4s ease-in-out infinite;
+}
+
+@keyframes glow-twinkle {
+    0%, 100% {
+        opacity: 0.3;
+        filter: brightness(1);
+    }
+    50% {
+        opacity: 1;
+        filter: brightness(1.5) drop-shadow(0 0 10px rgba(59, 130, 246, 0.8));
+    }
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-20px);
+    }
+}
+
+/* ================================
+   DROPDOWN MENU
+   ================================ */
+
+.dropdown {
+    position: relative;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: white;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+    border-radius: 1rem;
+    z-index: 50;
+    margin-top: 0.75rem;
+    min-width: 200px;
+    animation: slideInDown 0.3s ease;
+}
+
+html.dark .dropdown-menu {
+    background: #000d26;
+    box-shadow: 0 10px 40px rgba(59, 130, 246, 0.2);
+    border: 1px solid rgba(59, 130, 246, 0.3);
+}
+
+.dropdown-menu a {
+    display: block;
+    padding: 0.75rem 1rem;
+    text-decoration: none;
+    border-bottom: 1px solid #f0f0f0;
+    transition: all 0.2s;
+    color: #333;
+}
+
+html.dark .dropdown-menu a {
+    border-color: rgba(59, 130, 246, 0.2);
+    color: #ddd;
+}
+
+.dropdown-menu a:hover {
+    background-color: #001a4d;
+    color: white;
+}
+
+html.dark .dropdown-menu a:hover {
+    background-color: #0033cc;
+    color: #ffffff;
+}
+
+.dropdown-menu a:last-child {
+    border-bottom: none;
+}
+
+/* ================================
+   FLASH MESSAGES
+   ================================ */
+
+.flash-message {
+    animation: slideInDown 0.5s ease;
+}
+
+@keyframes slideInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ================================
+   BUTTON EFFECTS
+   ================================ */
+
+button, a.btn, [role="button"] {
+    transition: all 0.3s ease;
+}
+
+button:active, a.btn:active {
+    transform: scale(0.98);
+}
+
+/* ================================
+   CARD EFFECTS
+   ================================ */
+
+html.dark .shadow-lg {
+    box-shadow: 0 10px 30px rgba(59, 130, 246, 0.2);
+}
+
+html.dark .hover\:shadow-2xl:hover {
+    box-shadow: 0 20px 50px rgba(59, 130, 246, 0.3);
+}
+
+/* ================================
+   SCROLLBAR STYLING
+   ================================ */
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+html.dark ::-webkit-scrollbar-track {
+    background: #000d26;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #3b82f6;
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #1e40af;
+}
+
+html.dark ::-webkit-scrollbar-thumb {
+    background: #0066ff;
+}
+
+html.dark ::-webkit-scrollbar-thumb:hover {
+    background: #3b82f6;
+}
+
+/* ================================
+   LINE CLAMP
+   ================================ */
+
+.line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* ================================
+   TEXT EFFECTS
+   ================================ */
+
+.text-gradient {
+    background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+html.dark .text-gradient {
+    background: linear-gradient(135deg, #60a5fa, #a78bfa);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* ================================
+   RESPONSIVE DESIGN
+   ================================ */
+
+@media (max-width: 768px) {
+    .stars-container {
+        display: none;
+    }
+}
+
+/* ================================
+   SMOOTH TRANSITIONS
+   ================================ */
+
+* {
+    transition-property: background-color, border-color, color, fill, stroke, box-shadow;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 200ms;
+}
+
+html, body {
+    transition-duration: 300ms;
+}
+
+/* ================================
+   CUSTOM ANIMATIONS
+   ================================ */
+
+@keyframes slideInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes glow {
+    0%, 100% {
+        box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+    }
+    50% {
+        box-shadow: 0 0 40px rgba(59, 130, 246, 0.8);
+    }
+}
+
+.animate-glow {
+    animation: glow 2s ease-in-out infinite;
+}

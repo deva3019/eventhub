@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+
+{% block title %}My Events - EventHub{% endblock %}
+
+{% block content %}
+
+<div class="max-w-7xl mx-auto px-4 py-12">
+    <!-- Header -->
+    <div class="mb-12 flex flex-col md:flex-row justify-between items-start md:items-center animate__animated animate__fadeInDown">
+        <div>
+            <h1 class="text-4xl font-bold text-navy dark:text-white mb-2">
+                <i class="fas fa-calendar-check text-blue-500 mr-3"></i>My Events
+            </h1>
+            <p class="text-gray-600 dark:text-gray-400">Manage and view all your posted events</p>
+        </div>
+        <a href="/staff/create-event" class="mt-4 md:mt-0 inline-block bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-8 rounded-lg transition-all transform hover:scale-105">
+            <i class="fas fa-plus-circle mr-2"></i>Create Event
+        </a>
+    </div>
+    
+    <!-- Events List -->
+    {% if events %}
+    <div class="grid grid-cols-1 lg:grid-cols-1 gap-6">
+        {% for event in events %}
+        <div class="bg-white dark:bg-navy shadow-lg hover:shadow-2xl rounded-lg overflow-hidden transition-all transform hover:scale-105 animate__animated animate__fadeInUp" style="animation-delay: {{ loop.index * 0.1 }}s">
+            <div class="flex flex-col md:flex-row">
+                <!-- Event Image -->
+                {% if event.image %}
+                <img src="/static/uploads/events/{{ event.image }}" alt="{{ event.title }}" class="w-full md:w-48 h-48 object-cover">
+                {% else %}
+                <div class="w-full md:w-48 h-48 bg-gradient-to-br from-navy-light to-navy-dark flex items-center justify-center">
+                    <i class="fas fa-image text-gray-400 text-4xl"></i>
+                </div>
+                {% endif %}
+                
+                <!-- Event Info -->
+                <div class="flex-1 p-6 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-start justify-between mb-2">
+                            <h3 class="text-2xl font-bold text-navy dark:text-white">{{ event.title }}</h3>
+                            <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded-full text-sm font-bold">{{ event.category }}</span>
+                        </div>
+                        <p class="text-gray-600 dark:text-gray-400 mb-4">{{ event.description[:150] }}...</p>
+                        
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+                            <div>
+                                <p class="text-gray-500 dark:text-gray-400 text-sm">Date</p>
+                                <p class="font-bold text-navy dark:text-white">{{ event.date }}</p>
+                            </div>
+                            <div>
+                                <p class="text-gray-500 dark:text-gray-400 text-sm">Time</p>
+                                <p class="font-bold text-navy dark:text-white">{{ event.time }}</p>
+                            </div>
+                            <div>
+                                <p class="text-gray-500 dark:text-gray-400 text-sm">Registrations</p>
+                                <p class="font-bold text-navy dark:text-white">{{ event.registrations_count }}</p>
+                            </div>
+                            <div>
+                                <p class="text-gray-500 dark:text-gray-400 text-sm">Capacity</p>
+                                <p class="font-bold text-navy dark:text-white">{{ event.capacity }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Action Buttons -->
+                    <div class="flex flex-col md:flex-row gap-2">
+                        <a href="/event/{{ event._id }}" class="text-center text-sm bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded transition-colors font-semibold">
+                            <i class="fas fa-eye mr-1"></i>View
+                        </a>
+                        <a href="/staff/edit-event/{{ event._id }}" class="text-center text-sm bg-yellow-500 hover:bg-yellow-600 text-white py-2 px-4 rounded transition-colors font-semibold">
+                            <i class="fas fa-edit mr-1"></i>Edit
+                        </a>
+                        <a href="/staff/event-registrations/{{ event._id }}" class="text-center text-sm bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded transition-colors font-semibold">
+                            <i class="fas fa-users mr-1"></i>Registrations ({{ event.registrations_count }})
+                        </a>
+                        <button onclick="deleteEvent('{{ event._id }}')" class="text-center text-sm bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded transition-colors font-semibold">
+                            <i class="fas fa-trash mr-1"></i>Delete
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="text-center py-16 bg-gray-100 dark:bg-navy-dark rounded-lg">
+        <i class="fas fa-inbox text-6xl text-gray-400 mb-4"></i>
+        <h3 class="text-2xl font-bold text-navy dark:text-white mb-2">No events created yet</h3>
+        <p class="text-gray-600 dark:text-gray-400 mb-6">Start by creating your first event</p>
+        <a href="/staff/create-event" class="inline-block bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-8 rounded-lg transition-all transform hover:scale-105">
+            <i class="fas fa-plus-circle mr-2"></i>Create Event Now
+        </a>
+    </div>
+    {% endif %}
+</div>
+
+<script>
+function deleteEvent(eventId) {
+    if (confirm('Are you sure you want to delete this event? This action cannot be undone.')) {
+        fetch(`/staff/delete-event/${eventId}`, {
+            method: 'POST'
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                location.reload();
+            } else {
+                alert('Error: ' + data.message);
+            }
+        })
+        .catch(error => {
+            alert('Error deleting event');
+            console.error(error);
+        });
+    }
+}
+</script>
+
+{% endblock %}
